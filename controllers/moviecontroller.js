@@ -7,10 +7,9 @@ const { MovieModel } = require("../models");
 /*
 CREATE MOVIE ENTRY
 */
-
 router.post("/create", validateJWT, async (req, res) => {
     const {TmdbId, MovieTitle, Overview, ReleaseDt, OrigLanguage, Subgenre} = req.body.movie
-    const {id} = req.user;
+    const {id} = req.User.id;
     const movieEntry = {
         TmdbId,
         MovieTitle,
@@ -42,7 +41,7 @@ router.get("/:title", async (req, res) => {
     const { title } = req.params;
     try {
         const results = await MovieModel.findAll({
-            where: {title: title}
+            where: {MovieTitle: title}
         });
         res.status(200).json(results);
     } catch (err) {
@@ -51,8 +50,8 @@ router.get("/:title", async (req, res) => {
 })
 
 /*GET USER'S MOVIE WATCHLIST */
-router.get('/watchlist', validateJWT, (req, res) => {
-    const {id} = req.user;
+router.get('/watchlist', validateJWT, async (req, res) => {
+    const {id} = req.User;
     try {
         const userWatchlist = await MovieModel.findAll({
             where: {
