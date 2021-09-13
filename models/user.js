@@ -21,10 +21,10 @@ const User = dbConnection.define("user", {
 });
 
 // User.associate = (models) => {User.hasMany(MovieRatings)};
-User.associate = (models) => {
-    User.hasMany(models.MovieRatings, {
-        foreignKey: "userId"
-    })
-}
+// User.associate = (models) => {
+//     User.hasMany(models.MovieRatings, {
+//         foreignKey: "userId"
+//     })
+// }
 
 module.exports = User;

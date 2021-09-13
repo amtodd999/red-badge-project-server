@@ -25,7 +25,7 @@ const MovieReviews = db.define("review", {
     }
 })
 
-User.hasMany(MovieReviews);
-MovieReviews.belongsTo(User);
+// User.hasMany(MovieReviews);
+// MovieReviews.belongsTo(User);
 
 module.exports = MovieReviews;

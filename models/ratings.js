@@ -25,7 +25,7 @@ const MovieRatings = db.define("rating", {
 //         foreignKey: "id", as: "ownerId"
 //     })
 // }
-MovieRatings.belongsTo(User, {as: 'User', foreignKey: 'id'})
+//MovieRatings.belongsTo(User, {as: 'User', foreignKey: 'id'})
 
 
 
