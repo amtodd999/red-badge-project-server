@@ -1,7 +1,11 @@
-User = require('./user');
-Reviews = require('./reviews');
-Ratings = require('./ratings');
+function setAssociations(sequelize) {
+    const {movie, rating, review, user} = sequelize.models;
 
-const setAssociations = function() {
+    rating.belongsTo(user, {as: 'Owner'});
+    review.belongsTo(user,{as: 'Owner'});
+    movie.hasMany(rating, {as: 'Movie'});
+    movie.hasMany(review, {as: 'Film'});
     
 }
+
+module.exports = {setAssociations};

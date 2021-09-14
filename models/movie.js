@@ -15,7 +15,7 @@ const Movie = db.define("movie", {
     ReleaseDt: {
         type: DataTypes.DATE
     },
-    OrigLanguage: {
+    OrigLang: {
         type: DataTypes.STRING
     },
     Subgenre: {

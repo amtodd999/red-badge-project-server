@@ -5,15 +5,15 @@ const User = require("./user");
 
 
 const MovieReviews = db.define("review", {
-    MovieId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-    },
-    Owner: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
+    // MovieId: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     unique: true,
+    // },
+    // Owner: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    // },
     Review: {
         type: DataTypes.STRING(800),
         allowNull: false,
@@ -29,3 +29,5 @@ const MovieReviews = db.define("review", {
 // MovieReviews.belongsTo(User);
 
 module.exports = MovieReviews;
+
+// MovieReviews.belongsTo(User, {as: 'Owner'});
