@@ -3,7 +3,7 @@ const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 
-const {ReviewsModel} = require("../models");
+const {ReviewsModel, UserModel} = require("../models");
 
 //Create new review
 router.post("/add", validateJWT, async (req, res) =>{
@@ -12,11 +12,14 @@ router.post("/add", validateJWT, async (req, res) =>{
 
     const movieReview = {
         MovieId,
-        Review,
-        Owner: id
+        Review
     }
     try {
         const newReview = await ReviewsModel.create(movieReview);
+        const finduser = await UserModel.findOne({
+            where: {id: id}
+        })
+        await finduser.setReview(newReview)
         res.status(200).json(newReview);
     } catch (err) {
         res.status(500).json({error: err});

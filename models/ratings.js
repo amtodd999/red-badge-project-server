@@ -4,11 +4,11 @@ const db = require("../db");
 const User = require("./user");
 
 const MovieRatings = db.define("rating", {
-    // MovieId: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     unique: true,
-    // },
+    MovieId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true,
+    },
     // Owner: {
     //     type: DataTypes.INTEGER,
     //     allowNull: false

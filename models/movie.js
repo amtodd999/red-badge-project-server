@@ -3,7 +3,9 @@ const db = require("../db");
 
 const Movie = db.define("movie", {
     TmdbId: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        unique: true,
+        allowNull: true
     },
     MovieTitle: {
         type: DataTypes.STRING,
