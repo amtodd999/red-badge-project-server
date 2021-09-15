@@ -1,14 +1,14 @@
-const {Router} = require("express");
+const { Router } = require("express");
 const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 let validateIsAdmin = require("../middleware/validateIsAdmin");
 
-const {ReviewsModel, UserModel} = require("../models");
+const { ReviewsModel, UserModel } = require("../models");
 
 //Create new review
-router.post("/add", validateJWT, async (req, res) =>{
-    const {MovieId, Review} = req.body.review;
+router.post("/add", validateJWT, async (req, res) => {
+    const { MovieId, Review } = req.body.review;
     const id = req.User.id;
 
     const movieReview = {
@@ -16,14 +16,18 @@ router.post("/add", validateJWT, async (req, res) =>{
         Review
     }
     try {
-        const newReview = await ReviewsModel.create(movieReview);
         const findUser = await UserModel.findOne({
-            where: {id: id}
+            where: { id: id }
         })
-        await findUser.setReview(newReview)
-        res.status(200).json(newReview);
+        if (findUser) {
+            const newReview = await ReviewsModel.create(movieReview);
+            await newReview.setUser(findUser)
+            res.status(200).json(newReview);
+        } else {
+            res.status(401).json({ Message: "Can't create rating, user does not exist" })
+        }
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json({ error: err });
     }
 });
 
@@ -35,10 +39,10 @@ router.get("/myReviews", validateJWT, (async (req, res) => {
             where: {
                 userId: id
             }
-        }); console.log(userReviews) 
+        }); console.log(userReviews)
         res.status(200).json(userReviews);
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json({ error: err });
     }
 }));
 
@@ -47,12 +51,12 @@ router.get("/allReviews", validateJWT, validateIsAdmin, (async (req, res) => {
     await ReviewsModel.findAll().then(reviews => {
         res.json(reviews)
     })
-    .catch((err) => res.status(500).json({error: err}))
+        .catch((err) => res.status(500).json({ error: err }))
 }))
 
 //Update a review
 router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
-    const {MovieId, Review} = req.body.rating;
+    const { MovieId, Review } = req.body.rating;
     const reviewId = req.params.reviewToUpdate;
     const id = req.User.id;
 
@@ -71,8 +75,8 @@ router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
     try {
         const update = await ReviewsModel.update(updatedReview, query);
         res.status(200).json(update);
-    } catch(err) {
-        res.status(500).json({error: err});
+    } catch (err) {
+        res.status(500).json({ error: err });
     }
 });
 
@@ -90,9 +94,9 @@ router.delete("/delete/:reviewToDelete", validateJWT, async (req, res) => {
         };
 
         await ReviewsModel.destroy(query);
-        res.status(200).json({message: "Your review has been deleted"});
+        res.status(200).json({ message: "Your review has been deleted" });
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json({ error: err });
     }
 })
 
@@ -107,9 +111,9 @@ router.delete("/adminDelete/:reviewToDelete", validateJWT, validateIsAdmin, asyn
         };
 
         await ReviewsModel.destroy(query);
-        res.status(200).json({message: "This review has been deleted"});
+        res.status(200).json({ message: "This review has been deleted" });
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json({ error: err });
     }
 })
 module.exports = router;

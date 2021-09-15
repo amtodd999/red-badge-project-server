@@ -4,17 +4,11 @@ const RatingsModel = require("./ratings");
 const ReviewsModel = require("./reviews");
 
     
-    // MovieModel.hasMany(RatingsModel, {as: 'Movie'});
-    // RatingsModel.belongsTo(UserModel, {as: 'Owner'});
-    
-    // MovieModel.hasMany(ReviewsModel,{as: 'Film'});
-    // ReviewsModel.belongsTo(UserModel,{as: 'Owner'});
-    
     UserModel.hasMany(RatingsModel, {as: 'Rating'});
-    // UserModel.hasMany(RatingsModel);
     RatingsModel.belongsTo(UserModel);
 
     UserModel.hasMany(ReviewsModel, {as: 'Review'});
+    ReviewsModel.belongsTo(UserModel);
 
 module.exports = {
     UserModel,

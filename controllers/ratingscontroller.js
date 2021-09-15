@@ -17,12 +17,16 @@ router.post("/add", validateJWT, async (req, res) => {
         Rating
     }
     try {
-        const newRating = await RatingsModel.create(movieRating);
         const findUser = await UserModel.findOne({
             where: {id: id}
         })
-        await findUser.setRating(newRating)
-        res.status(200).json(newRating);
+        if (findUser) {
+            const newRating = await RatingsModel.create(movieRating);
+            await newRating.setUser(findUser)
+            res.status(200).json(newRating);
+        } else {
+            res.status(401).json({ Message: "Can't create rating, user does not exist" })
+        }
     } catch (err) {
         res.status(500).json({error: err});
     }
