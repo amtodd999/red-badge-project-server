@@ -15,12 +15,7 @@ const MovieRatings = db.define("rating", {
     
 })
 
-// MovieRatings.associate = (models) => {
-//     MovieRatings.belongsTo(models.user, {
-//         foreignKey: "id", as: "ownerId"
-//     })
-// }
-//MovieRatings.belongsTo(User, {as: 'User', foreignKey: 'id'})
+
 
 
 

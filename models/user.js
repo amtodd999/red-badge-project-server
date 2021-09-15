@@ -13,11 +13,6 @@ const User = dbConnection.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    // role: {
-    //     type: DataTypes.STRING,
-    //     defaultValue: 'Basic',
-    //     enum: ["Basic", "Admin"]
-    // }
     isAdmin: {
         type: DataTypes.BOOLEAN,
         allowNull: false
