@@ -2,6 +2,7 @@ const {Router} = require("express");
 const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
+let validateIsAdmin = require("../middleware/validateIsAdmin");
 
 const {ReviewsModel, UserModel} = require("../models");
 
@@ -16,23 +17,23 @@ router.post("/add", validateJWT, async (req, res) =>{
     }
     try {
         const newReview = await ReviewsModel.create(movieReview);
-        const finduser = await UserModel.findOne({
+        const findUser = await UserModel.findOne({
             where: {id: id}
         })
-        await finduser.setReview(newReview)
+        await findUser.setReview(newReview)
         res.status(200).json(newReview);
     } catch (err) {
         res.status(500).json({error: err});
     }
 });
 
-//Get movie review
+//Get user's movie review
 router.get("/myReviews", validateJWT, (async (req, res) => {
     const id = req.User.id;
     try {
         const userReviews = await ReviewsModel.findAll({
             where: {
-                Owner: id
+                userId: id
             }
         }); console.log(userReviews) 
         res.status(200).json(userReviews);
@@ -40,6 +41,14 @@ router.get("/myReviews", validateJWT, (async (req, res) => {
         res.status(500).json({error: err});
     }
 }));
+
+//Get all reviews
+router.get("/allReviews", validateJWT, validateIsAdmin, (async (req, res) => {
+    await ReviewsModel.findAll().then(reviews => {
+        res.json(reviews)
+    })
+    .catch((err) => res.status(500).json({error: err}))
+}))
 
 //Update a review
 router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
@@ -67,7 +76,7 @@ router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
     }
 });
 
-//Delete a review
+//Delete user's own review
 router.delete("/delete/:reviewToDelete", validateJWT, async (req, res) => {
     const id = req.User.id
     const reviewId = req.params.reviewToDelete;
@@ -87,4 +96,20 @@ router.delete("/delete/:reviewToDelete", validateJWT, async (req, res) => {
     }
 })
 
+//Delete any user review
+router.delete("/adminDelete/:reviewToDelete", validateJWT, validateIsAdmin, async (req, res) => {
+    const reviewId = req.params.reviewToDelete;
+    try {
+        const query = {
+            where: {
+                id: reviewId
+            }
+        };
+
+        await ReviewsModel.destroy(query);
+        res.status(200).json({message: "This review has been deleted"});
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+})
 module.exports = router;

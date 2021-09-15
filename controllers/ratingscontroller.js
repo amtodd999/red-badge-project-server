@@ -2,6 +2,7 @@ const {Router} = require("express");
 const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
+let validateIsAdmin = require("../middleware/validateIsAdmin");
 
 const {RatingsModel, UserModel} = require("../models");
 const User = require("../models/user");
@@ -27,27 +28,37 @@ router.post("/add", validateJWT, async (req, res) => {
     }
 });
 
-//Get movie rating
+//Get user's movie rating
 router.get("/myRatings", validateJWT, (async (req, res) => {
     const id = req.User.id;
     try {
-        // const userRatings = await RatingsModel.findAll({
-        //     where: {
-        //         Owner: id
-        //     }
-        // }); 
         const userRatings = await RatingsModel.findAll({
-            include: [{
-                model: User,
-                attributes: ['id']
-            }]
-        })
+            where: {
+                userId: id
+            }
+        }); 
+        // const userRatings = await RatingsModel.findAll({
+            
+        //     include: [{
+        //         model: User,
+        //         attributes: ['id']
+        //     }]
+        // })
         console.log(userRatings) 
         res.status(200).json(userRatings);
     } catch (err) {
         res.status(500).json({error: err});
     }
 }));
+
+//Get all ratings
+router.get("/allRatings", validateJWT, validateIsAdmin, (async (req, res) => {
+    console.log(validateIsAdmin())
+    await RatingsModel.findAll().then(ratings => {
+        res.json(ratings)
+    })
+    .catch(err => res.status(500).json({error: err}))
+}))
 
 //Update a rating
 router.put("/update/:ratingToUpdate", validateJWT, async (req, res) => {
@@ -75,7 +86,7 @@ router.put("/update/:ratingToUpdate", validateJWT, async (req, res) => {
     }
 });
 
-//Delete a rating
+//Delete user's own rating
 router.delete("/delete/:ratingToDelete", validateJWT, async (req, res) => {
     const id = req.User.id
     const ratingId = req.params.ratingToDelete;

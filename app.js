@@ -16,7 +16,7 @@ app.use("/review", controllers.reviewsController);
 app.use(require("./middleware/validate-jwt"));
 
 dbConnection.authenticate()
-.then(() => dbConnection.sync({force: true}))    //{force: true} to reset db
+.then(() => dbConnection.sync())    //{force: true} to reset db
 .then(() => {
     app.listen(3000, () => {
         console.log(`[Server]: App is listening on 3000`)

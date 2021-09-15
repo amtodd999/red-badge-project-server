@@ -7,12 +7,7 @@ const MovieRatings = db.define("rating", {
     MovieId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
     },
-    // Owner: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false
-    // },
     Rating: {
         type: DataTypes.INTEGER,
         allowNull: false,
