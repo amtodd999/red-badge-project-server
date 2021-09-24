@@ -1,18 +1,19 @@
 const UserModel = require("./user");
 const MovieModel = require("./movie");
-const RatingsModel = require("./ratings");
+const FilmsModel = require("./films");
 const ReviewsModel = require("./reviews");
 
     
-    UserModel.hasMany(RatingsModel, {as: 'Rating'});
-    RatingsModel.belongsTo(UserModel);
+    UserModel.hasMany(FilmsModel, {as: 'film'});
+    FilmsModel.belongsTo(UserModel);
 
-    UserModel.hasMany(ReviewsModel, {as: 'Review'});
+    UserModel.hasMany(ReviewsModel, {as: 'review'});
     ReviewsModel.belongsTo(UserModel);
+    ReviewsModel.belongsTo(FilmsModel);
 
 module.exports = {
     UserModel,
     MovieModel,
-    RatingsModel,
+    FilmsModel,
     ReviewsModel
 };

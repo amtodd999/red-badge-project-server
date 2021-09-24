@@ -1,7 +1,7 @@
 const {DataTypes, STRING} = require("sequelize");
 const { UserModel } = require(".");
 const dbConnection = require("../db");
-const MovieRatings = require("./ratings");
+const films = require("./films");
 
 const User = dbConnection.define("user", {
     email: {
@@ -24,9 +24,9 @@ const User = dbConnection.define("user", {
     }
 });
 
-// User.associate = (models) => {User.hasMany(MovieRatings)};
+// User.associate = (models) => {User.hasMany(Moviefilms)};
 // User.associate = (models) => {
-//     User.hasMany(models.MovieRatings, {
+//     User.hasMany(models.Moviefilms, {
 //         foreignKey: "userId"
 //     })
 // }

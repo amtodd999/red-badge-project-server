@@ -5,10 +5,6 @@ const User = require("./user");
 
 
 const MovieReviews = db.define("review", {
-    MovieId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
     Review: {
         type: DataTypes.STRING(800),
         allowNull: false,

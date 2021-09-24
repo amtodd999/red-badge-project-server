@@ -3,14 +3,15 @@ const Express = require("express");
 const app = Express();
 const dbConnection = require("./db");
 
-
+app.use(require('./middleware/headers'));
 const controllers = require('./controllers');
 
 app.use(Express.json());
 
+
 app.use("/movie", controllers.movieController);
 app.use("/User", controllers.userController);
-app.use("/rating", controllers.ratingsController);
+app.use("/film", controllers.filmsController);
 app.use("/review", controllers.reviewsController);
 
 app.use(require("./middleware/validate-jwt"));

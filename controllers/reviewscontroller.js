@@ -8,12 +8,12 @@ const { ReviewsModel, UserModel } = require("../models");
 
 //Create new review
 router.post("/add", validateJWT, async (req, res) => {
-    const { MovieId, Review } = req.body.review;
+    const { Review, filmId } = req.body.review;
     const id = req.User.id;
 
     const movieReview = {
-        MovieId,
-        Review
+                Review, 
+                filmId
     }
     try {
         const findUser = await UserModel.findOne({
@@ -24,7 +24,7 @@ router.post("/add", validateJWT, async (req, res) => {
             await newReview.setUser(findUser)
             res.status(200).json(newReview);
         } else {
-            res.status(401).json({ Message: "Can't create rating, user does not exist" })
+            res.status(401).json({ Message: "Can't create film, user does not exist" })
         }
     } catch (err) {
         res.status(500).json({ error: err });
@@ -56,21 +56,19 @@ router.get("/allReviews", validateJWT, validateIsAdmin, (async (req, res) => {
 
 //Update a review
 router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
-    const { MovieId, Review } = req.body.rating;
+    const { Review } = req.body.review;
     const reviewId = req.params.reviewToUpdate;
     const id = req.User.id;
 
     const query = {
         where: {
             id: reviewId,
-            Owner: id
+            userId: id
         }
     };
 
     const updatedReview = {
-        MovieId: MovieId,
-        Review: Review,
-        Owner: id
+        Review: Review
     };
     try {
         const update = await ReviewsModel.update(updatedReview, query);
@@ -89,7 +87,7 @@ router.delete("/delete/:reviewToDelete", validateJWT, async (req, res) => {
         const query = {
             where: {
                 id: reviewId,
-                Owner: id
+                userId: id
             }
         };
 

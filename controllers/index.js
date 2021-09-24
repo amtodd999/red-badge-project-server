@@ -1,6 +1,6 @@
 module.exports = {
     userController: require ('./usercontroller'),
     movieController: require ('./moviecontroller'),
-    ratingsController: require ('./ratingscontroller'),
+    filmsController: require ('./filmscontroller'),
     reviewsController: require ('./reviewscontroller')
 }
