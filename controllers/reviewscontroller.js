@@ -54,6 +54,20 @@ router.get("/allReviews", validateJWT, validateIsAdmin, (async (req, res) => {
         .catch((err) => res.status(500).json({ error: err }))
 }))
 
+//Get all flagged reviews
+router.get("/flaggedReviews", validateJWT, validateIsAdmin, (async (req, res) => {
+    await ReviewsModel.findAll(
+        {where: {
+            Flagged: true
+        }
+
+        }
+    ).then(reviews => {
+        res.json(reviews)
+    })
+        .catch((err) => res.status(500).json({ error: err }))
+}))
+
 //Update a review
 router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
     const { Review } = req.body.review;

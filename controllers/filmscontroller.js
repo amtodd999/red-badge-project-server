@@ -32,7 +32,7 @@ router.post("/add", validateJWT, async (req, res) => {
     }
 });
 
-//Get user's movie film
+//Get user's films
 router.get("/myfilms", validateJWT, (async (req, res) => {
     const id = req.User.id;
     try {
@@ -62,6 +62,23 @@ router.get("/allfilms", validateJWT, validateIsAdmin, (async (req, res) => {
         res.json(films)
     })
     .catch(err => res.status(500).json({error: err}))
+}))
+
+//Get film by id
+router.get("/:singleFilmId", validateJWT, (async (req, res) => {
+    const singleFilmId = req.params.singleFilmId;
+    const id = req.User.id;
+    try {
+        const results = await FilmsModel.findAll({
+            where: {
+                id: singleFilmId,
+                userId: id
+            }
+        });
+        res.status(200).json(results);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
 }))
 
 //Update a film
