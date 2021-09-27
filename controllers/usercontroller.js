@@ -3,7 +3,11 @@ const router = require("express").Router();
 const { UserModel } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const validateJWT = require("../middleware/validate-jwt");
+const validateIsAdmin = require("../middleware/validateIsAdmin");
 
+
+//Create new user
 router.post("/register", async (req, res) => {
 
     const { email, password, isAdmin } = req.body.User;
@@ -36,6 +40,40 @@ router.post("/register", async (req, res) => {
     }
 })
 
+//Update a user as admin
+router.put("/update/:userToUpdate", validateJWT, validateIsAdmin, (async (req,res) => {
+    const {isAdmin} = req.body.User;
+    const userId = req.params.userToUpdate;
+    const id = req.params.userToUpdate;
+    const query = {
+        where: {
+            id: userId
+        }
+    } 
+    const updatedUser = {
+        
+        isAdmin: isAdmin
+    };
+    try {
+        const update = await UserModel.update(updatedUser, query)
+        console.log(update)
+        res.status(200).json(update);
+    } catch(err) {
+        res.status(500).json({error: err});
+    }
+}))
+
+//Get all users ADMIN
+router.get("/allusers", validateJWT, validateIsAdmin, (async (req, res) => {
+    console.log(validateIsAdmin())
+    await UserModel.findAll().then(users => {
+        res.json(users)
+    })
+    .catch(err => res.status(500).json({error: err}))
+}))
+
+
+//User login
 router.post("/login", async (req, res) => {
     let { email, password } = req.body.User;
 
@@ -80,5 +118,22 @@ router.post("/login", async (req, res) => {
     }
 
 });
+
+//Delete user ADMIN
+router.delete("/adminDelete/:userToDelete", validateJWT, validateIsAdmin, async (req, res) => {
+    const deleteId = req.params.userToDelete;
+    try {
+        const query = {
+            where: {
+                id: deleteId
+            }
+        };
+
+        await UserModel.destroy(query);
+        res.status(200).json({ message: "This user has been deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
+})
 
 module.exports = router;
