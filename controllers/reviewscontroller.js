@@ -4,7 +4,7 @@ const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 let validateIsAdmin = require("../middleware/validateIsAdmin");
 
-const { ReviewsModel, UserModel } = require("../models");
+const { ReviewsModel, UserModel, MovieModel, FilmsModel } = require("../models");
 
 //Create new review
 router.post("/add", validateJWT, async (req, res) => {
@@ -38,7 +38,10 @@ router.get("/myReviews", validateJWT, (async (req, res) => {
         const userReviews = await ReviewsModel.findAll({
             where: {
                 userId: id
-            }
+            },
+            include: [{
+                model: FilmsModel
+            }]
         }); console.log(userReviews)
         res.status(200).json(userReviews);
     } catch (err) {
