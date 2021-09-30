@@ -56,7 +56,6 @@ router.put("/update/:userToUpdate", validateJWT, validateIsAdmin, (async (req,re
     };
     try {
         const update = await UserModel.update(updatedUser, query)
-        console.log(update)
         res.status(200).json(update);
     } catch(err) {
         res.status(500).json({error: err});
@@ -65,7 +64,6 @@ router.put("/update/:userToUpdate", validateJWT, validateIsAdmin, (async (req,re
 
 //Get all users ADMIN
 router.get("/allusers", validateJWT, validateIsAdmin, (async (req, res) => {
-    console.log(validateIsAdmin())
     await UserModel.findAll().then(users => {
         res.json(users)
     })
@@ -83,18 +81,12 @@ router.post("/login", async (req, res) => {
                 email: email,
             },
         });
-
         if (loginUser) {
-
             let passwordComparison = await bcrypt.compare(password, loginUser.password);
-            console.log(loginUser.password)
-            console.log(password)
-            console.log("here is the comparison" + passwordComparison)
-
             if (passwordComparison) {
                 let token = jwt.sign({ id: loginUser.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
 
-                res.status(200).json({
+                res.status(200).json({ 
                     User: loginUser,
                     message: "logged in",
                     sessionToken: token

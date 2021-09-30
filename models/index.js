@@ -6,6 +6,7 @@ const ReviewsModel = require("./reviews");
     
     UserModel.hasMany(FilmsModel, {as: 'film'});
     FilmsModel.belongsTo(UserModel);
+    FilmsModel.hasMany(ReviewsModel);
 
     UserModel.hasMany(ReviewsModel, {as: 'review'});
     ReviewsModel.belongsTo(UserModel);

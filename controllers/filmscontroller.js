@@ -4,7 +4,7 @@ const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 let validateIsAdmin = require("../middleware/validateIsAdmin");
 
-const {FilmsModel, UserModel} = require("../models");
+const {FilmsModel, UserModel, ReviewsModel} = require("../models");
 const User = require("../models/user");
 
 //Create new film
@@ -39,15 +39,9 @@ router.get("/myfilms", validateJWT, (async (req, res) => {
         const userfilms = await FilmsModel.findAll({
             where: {
                 userId: id
-            }
+            },
+            include: ReviewsModel
         }); 
-        // const userfilms = await FilmsModel.findAll({
-            
-        //     include: [{
-        //         model: User,
-        //         attributes: ['id']
-        //     }]
-        // })
         console.log(userfilms) 
         res.status(200).json(userfilms);
     } catch (err) {
@@ -57,7 +51,6 @@ router.get("/myfilms", validateJWT, (async (req, res) => {
 
 //Get all films
 router.get("/allfilms", validateJWT, validateIsAdmin, (async (req, res) => {
-    console.log(validateIsAdmin())
     await FilmsModel.findAll().then(films => {
         res.json(films)
     })
