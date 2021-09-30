@@ -8,12 +8,12 @@ const { ReviewsModel, UserModel, MovieModel, FilmsModel } = require("../models")
 
 //Create new review
 router.post("/add", validateJWT, async (req, res) => {
-    const { Review, filmId } = req.body.review;
+    const { MovieTitle, Review } = req.body.review;
     const id = req.User.id;
 
     const movieReview = {
-                Review, 
-                filmId
+                MovieTitle,
+                Review
     }
     try {
         const findUser = await UserModel.findOne({
@@ -31,6 +31,33 @@ router.post("/add", validateJWT, async (req, res) => {
     }
 });
 
+
+//Future Create review whenever I am able to make the associations work with the front end
+// router.post("/add", validateJWT, async (req, res) => {
+//     const { Review, filmId } = req.body.review;
+//     const id = req.User.id;
+
+//     const movieReview = {
+    
+//                 Review, 
+//                 filmId
+//     }
+//     try {
+//         const findUser = await UserModel.findOne({
+//             where: { id: id }
+//         })
+//         if (findUser) {
+//             const newReview = await ReviewsModel.create(movieReview);
+//             await newReview.setUser(findUser)
+//             res.status(200).json(newReview);
+//         } else {
+//             res.status(401).json({ Message: "Can't create film, user does not exist" })
+//         }
+//     } catch (err) {
+//         res.status(500).json({ error: err });
+//     }
+// });
+
 //Get user's movie review
 router.get("/myReviews", validateJWT, (async (req, res) => {
     const id = req.User.id;
@@ -38,10 +65,7 @@ router.get("/myReviews", validateJWT, (async (req, res) => {
         const userReviews = await ReviewsModel.findAll({
             where: {
                 userId: id
-            },
-            include: [{
-                model: FilmsModel
-            }]
+            }
         }); console.log(userReviews)
         res.status(200).json(userReviews);
     } catch (err) {
