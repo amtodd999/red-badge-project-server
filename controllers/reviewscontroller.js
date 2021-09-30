@@ -97,7 +97,7 @@ router.get("/flaggedReviews", validateJWT, validateIsAdmin, (async (req, res) =>
 
 //Update a review
 router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
-    const { Review } = req.body.review;
+    const { MovieTitle, Review } = req.body.review;
     const reviewId = req.params.reviewToUpdate;
     const id = req.User.id;
 
@@ -109,6 +109,7 @@ router.put("/update/:reviewToUpdate", validateJWT, async (req, res) => {
     };
 
     const updatedReview = {
+        MovieTitle: MovieTitle,
         Review: Review
     };
     try {
