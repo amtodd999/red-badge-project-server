@@ -1,6 +1,5 @@
 const {DataTypes, STRING} = require("sequelize");
 const dbConnection = require("../db");
-const films = require("./films");
 
 const User = dbConnection.define("user", {
     email: {

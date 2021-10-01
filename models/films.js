@@ -1,7 +1,5 @@
 const { DataTypes, Sequelize } = require("sequelize");
-const { MovieModel, UserModel } = require(".");
 const db = require("../db");
-const User = require("./user");
 
 const films = db.define("film", {
     FilmTitle: {

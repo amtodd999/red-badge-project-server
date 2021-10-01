@@ -1,8 +1,5 @@
 const { DataTypes } = require("sequelize");
-const {MovieModel} = require(".");
 const db = require("../db");
-const User = require("./user");
-
 
 const MovieReviews = db.define("review", {
     
