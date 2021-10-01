@@ -1,5 +1,4 @@
 const {DataTypes, STRING} = require("sequelize");
-const { UserModel } = require(".");
 const dbConnection = require("../db");
 const films = require("./films");
 
