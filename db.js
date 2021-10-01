@@ -8,6 +8,11 @@ const sequelize = new Sequelize(process.env.DB_URL || `postgresql://postgres:${e
         }
     }
 })
+
+module.exports = sequelize;
+
+
+
 // const sequelize = new Sequelize(process.env.DB_URL, {
 //     dialect: `postgres`,
 //ssl: process.env.ENVIRONMENT === `production`
@@ -22,5 +27,3 @@ const sequelize = new Sequelize(process.env.DB_URL || `postgresql://postgres:${e
 //         }
 //     }
 // })
-
-module.exports = sequelize;
