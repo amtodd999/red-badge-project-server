@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_URL || `postgresql://postgres:${encodeURIComponent(process.env.PASS)}@localhost/amt-first-izutu-server`, {
+const sequelize = new Sequelize(process.env.DATABASE_URL || `postgresql://postgres:${encodeURIComponent(process.env.PASS)}@localhost/amt-first-izutu-server`, {
     dialect: `postgres`,
     dialectOptions: {
         ssl: {

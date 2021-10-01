@@ -9,7 +9,7 @@ const controllers = require('./controllers');
 app.use(Express.json());
 
 
-app.use("/movie", controllers.movieController);
+// app.use("/movie", controllers.movieController);
 app.use("/User", controllers.userController);
 app.use("/film", controllers.filmsController);
 app.use("/review", controllers.reviewsController);
