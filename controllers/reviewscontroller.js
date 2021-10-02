@@ -66,7 +66,7 @@ router.get("/myReviews", validateJWT, (async (req, res) => {
             where: {
                 userId: id
             }
-        }); console.log(userReviews)
+        }); 
         res.status(200).json(userReviews);
     } catch (err) {
         res.status(500).json({ error: err });

@@ -42,7 +42,7 @@ router.get("/myfilms", validateJWT, (async (req, res) => {
             },
             include: ReviewsModel
         }); 
-        console.log(userfilms) 
+         
         res.status(200).json(userfilms);
     } catch (err) {
         res.status(500).json({error: err});

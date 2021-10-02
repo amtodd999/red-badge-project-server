@@ -19,12 +19,14 @@ app.use(require("./middleware/validate-jwt"));
 dbConnection.authenticate()
 .then(() => dbConnection.sync())    //{force: true} to reset db
 .then(() => {
-    // app.listen(3000, () => {
-    //     console.log(`[Server]: App is listening on 3000`)
-    // });
-    app.listen(process.env.PORT, () => {
-        console.log(`[Server]: App is listening on ${process.env.PORT}`)
+    //local port info
+    app.listen(3000, () => {
+        console.log(`[Server]: App is listening on 3000`)
     });
+    //heroku port info
+    // app.listen(process.env.PORT, () => {
+    //     console.log(`[Server]: App is listening on ${process.env.PORT}`)
+    // });
 })
     .catch((err) => {
         console.log(`[Server]: Server crashed. Error= ${err}`);
